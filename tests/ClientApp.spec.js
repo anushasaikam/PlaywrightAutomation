@@ -1,52 +1,18 @@
 const {test, expect} = require('@playwright/test');
 
-
-// test('Login Test', async({page})=>
-// {
- 
-//     //const page = await context.newPage();
-
-//     const firstName = page.locator("#firstName");
-//     const lastName = page.locator("#lastName");
-//     const email = page.locator("#userEmail");
-//     const phoneNumber = page.locator("#userMobile");
-//     const occupation =  page.locator("select[formcontrolname='occupation']");
-//     const gender = page.locator('input[type="radio"][value="Female"]');
-//     const password = page.locator("#userPassword");
-//     const confirmPassword = page.locator("#confirmPassword");
-//     const ageConfirmCheckbox = page.locator("[type='checkbox']");
-//     const submitButton = page.locator("#login");
-
-//     await page.goto("https://rahulshettyacademy.com/client/#/auth/register");
-//     console.log(await page.title());
-//     await firstName.fill("Mary");
-//     await lastName.fill("Jordan");
-//     await email.fill("mary.jordantest@yahoo.com");
-//     await phoneNumber.fill("5246859456");
-
-//     await expect(occupation).toBeEnabled();               // ensure dropdown is enabled
-//     await occupation.selectOption({ label: "Student" });  // select by label instead of value "2"
-//     await gender.check();
-
-//     await password.fill("Password@123");
-//     await confirmPassword.fill("Password@123");
-//     await ageConfirmCheckbox.check();
-//     await submitButton.click();
-
-
-// });
-
 test.only('Client App login', async({page})=>{
 
 
     const email = "mary.jordantest@yahoo.com"
+    const password = "Password@123"
     const productName = 'ZARA COAT 3'
     const products = page.locator(".card-body");
+
     await page.goto("https://rahulshettyacademy.com/client/#/auth/login");
     console.log(await page.title());
 
-    await page.locator("#userEmail").fill("mary.jordantest@yahoo.com");
-    await page.locator("#userPassword").fill("Password@123");
+    await page.locator("#userEmail").fill(email);
+    await page.locator("#userPassword").fill(password);
     await page.locator("#login").click();
     await page.waitForLoadState('networkidle');
     await page.locator(".card-body b").first().waitFor();
@@ -85,7 +51,24 @@ test.only('Client App login', async({page})=>{
 
     const orderId =await page.locator(" .em-spacer-1 .ng-star-inserted").textContent();
     console.log(orderId);
+    await page.locator("button[routerlink*='myorders']").click();
+    await page.locator("tbody").waitFor();
 
+    const rows =await page.locator("tbody tr");
+
+    for(let i=0; i<await rows.count(); ++i)
+    {
+
+        const roworderId = await rows.nth(i).locator("th").textContent();
+        if(orderId.includes(roworderId))
+        {
+            await rows.nth(i).locator("button").first().click();
+            break;
+        }
+
+    }
+    const orderIdDetails = await page.locator(".col-text.-main").textContent();
+    expect(orderId.includes(orderIdDetails)).toBeTruthy();
 
     })
 

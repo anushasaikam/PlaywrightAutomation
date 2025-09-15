@@ -20,8 +20,6 @@ test('First playwright Test' , async ({browser}) =>
 
     console.log(await page.locator(".card-body a").first().textContent());
 
-
-
     //console.log(await page.locator("[style*=none]").textContent());
     //await expect(page.locator("[style*=none]")).toContainText("Incorrect");
     
@@ -86,25 +84,3 @@ test('Child Windows', async({browser})=>
 
     
 })
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-test('Page playwright Test', async ({page})=>
-{
-
-    await page.goto("https://www.google.com/");
-    console.log(await page.title());
-    await expect(page).toHaveTitle("Google");
-
-});
