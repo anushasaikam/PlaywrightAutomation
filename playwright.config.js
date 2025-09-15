@@ -22,10 +22,10 @@ const config = ({
   reporter : 'html',
 
   use: {
-    browserName : 'chromium',
-    headless: false,
-    screenshot : 'on',
-    trace : 'on'
+    headless: true,
+    browserName: 'chromium',
+    screenshot: 'on',
+    trace: 'on'
   },
 
 });
